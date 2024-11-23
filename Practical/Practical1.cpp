@@ -5,7 +5,6 @@
 #pragma comment (lib, "OpenGL32.lib")
 
 #define WINDOW_TITLE "OpenGL Window"
-
 int qNo = 1;
 float radius = 0.2;
 float x = 0, y = 0;
@@ -13,6 +12,11 @@ float angle = 0;
 float x2 = 0, y2 = 0;
 float PI = 3.14159;
 int noOfTri = 30;
+
+float screenWidth = 800;
+float screenHeight = 600;
+// Define the screen width and height
+float aspect = (float)screenHeight / (float)screenWidth; // Calculate aspect ratio
 
 LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
@@ -39,6 +43,9 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 			break;
 		case 0x35:
 			qNo = 5;
+			break;
+		case 0x36:
+			qNo = 6;
 			break;
 		default:
 			qNo = 1;
@@ -171,17 +178,30 @@ void england() {
 }
 
 void japan() {
+	
+
+
+	// Clear the screen with a white background
 	glClearColor(1.0, 1.0, 1.0, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT);
+
+	// Start drawing the circle
 	glBegin(GL_TRIANGLE_FAN);
-	glVertex2f(x, y);
-	for (angle = 0; angle < 2 * PI; angle += (2 * PI) / noOfTri) {
-		x2 = x + radius * cos(angle);
-		y2 = y + radius * sin(angle);
-		glColor3f(1.0f, 0.0f, 0.0);
+	glColor3f(1.0f, 0.0f, 0.0f); // Red color for the circle
+	glVertex2f(x, y); // Center of the circle
+
+	// Draw vertices around the circle
+	for (int i = 0; i <= noOfTri; i++) {
+		angle = i * 2.0f * 3.14159265359f / noOfTri; // Angle for each triangle vertex
+
+		// Adjust x coordinate with aspect ratio to maintain roundness
+		float x2 = x + radius * cos(angle) * aspect;
+		float y2 = y + radius * sin(angle);
 		glVertex2f(x2, y2);
 	}
 	glEnd();
+
+	glFlush(); // Ensure rendering is completed
 }
 
 void scotland() {
@@ -201,12 +221,117 @@ void scotland() {
 
 	glEnd();
 }
+
+void drawTri(float x1, float y1, float x2, float y2, float x3, float y3, float R, float G, float B) {
+	glBegin(GL_TRIANGLES);
+	glColor3f(R, G, B);
+	glVertex2f(x1, y1);
+	glVertex2f(x2, y2);
+	glVertex2f(x3, y3);
+	glEnd();
+}
+
+void drawRect(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4, float R, float G, float B) {
+	glBegin(GL_QUADS);
+	glColor3f(R, G, B);
+	
+	glVertex2f(x1, y1);
+	glVertex2f(x2, y2);
+
+	glVertex2f(x3, y3);
+	glVertex2f(x4, y4);
+
+	glEnd();
+}
+
+void drawCircle(GLenum glType, boolean startingFromCenter, boolean semiCircle, float centerX, float centerY, float posX, float posY, int totalTriangle, float radiusX, float radiusY, float R, float G, float B) {
+	int divide = 1;
+
+	if (semiCircle == true) {
+		divide = 2;
+	}
+	
+	glBegin(glType);
+
+	startingFromCenter = false;
+
+	glColor3f(R, G, B); // Red color for the circle
+	if (startingFromCenter == true) {
+		glVertex2f(centerX, centerY); // Center of the circle
+	}
+	
+
+	// Draw vertices around the circle
+	for (int i = 0; i <= totalTriangle / divide; i++) {
+		angle = i * 2.0f * 3.14159265359f / totalTriangle; // Angle for each triangle vertex
+
+		// Adjust x coordinate with aspect ratio to maintain roundness
+		float x2 = posX + radiusX * cos(angle) * aspect;
+		float y2 = posY + radiusY * sin(angle);
+		glVertex2f(x2, y2);
+	}
+	glEnd();
+}
+
+void drawLine(float x1, float y1, float x2, float y2, float R, float G, float B, float lineWidth) {
+	glLineWidth(lineWidth);
+	glBegin(GL_LINES);
+	glColor3f(R, G, B);
+	glVertex2f(x1, y1);
+	glVertex2f(x2, y2);
+	glEnd();
+}
+
+void hitler() {
+	//face
+	drawCircle(GL_TRIANGLE_FAN, false, false, 0.0, 0.0, 0.0, 0.0, 30, 0.4, 0.5, 1.0, 0.87, 0.76);
+	drawCircle(GL_LINE_LOOP, false, false, 0.0, 0.0, 0.0, 0.0, 30, 0.4, 0.5, 0, 0, 0);
+
+	drawCircle(GL_TRIANGLE_FAN, false, false, 0.0, 0.0, -0.3, 0.1, 30, 0.1, 0.15, 1.0, 0.87, 0.76);
+
+	drawCircle(GL_TRIANGLE_FAN, false, false, 0.0, 0.0, 0.3, 0.1, 30, 0.1, 0.15, 1.0, 0.87, 0.76);
+
+	drawRect(-0.05, 0.13, -0.15, 0.13, -0.15, 0.15, -0.05, 0.15, 0, 0, 0);
+	drawCircle(GL_TRIANGLE_FAN, false, false, 0.0, 0.0, -0.1, 0.1, 30, 0.05, 0.05, 0, 0, 0);
+
+	drawRect(0.05, 0.13, 0.15, 0.13, 0.15, 0.15, 0.05, 0.15, 0, 0, 0);
+	drawCircle(GL_TRIANGLE_FAN, false, false, 0.0, 0.0, 0.1, 0.1, 30, 0.05, 0.05, 0, 0, 0);
+
+	//nose
+	drawRect(0.05, -0.13, -0.05, -0.13, -0.05, -0.05, 0.05, -0.05, 0, 0, 0);
+
+	//hair
+	drawCircle(GL_TRIANGLE_FAN, false, true, 0, 0, 0, 0.25, 30, 0.35, 0.25, 0, 0, 0);
+	//drawTri(0.27, 0.25, 0.3, 0.1, 0.17, 0.25, 0, 0, 0);
+	drawTri(0.26, 0.25, 0.26, 0.1, 0.1, 0.25, 0, 0, 0);
+
+	//mouth
+	drawCircle(GL_LINE_STRIP, false, true, 0, 0, 0, -0.3, 30, 0.1, 0.1, 0, 0, 0);
+
+	drawCircle(GL_LINE_LOOP, false, false, 0.0, 0.0, 0.0, 0.0, 30, 0.4, 0.5, 0, 0, 0);
+}
+
+void flag() {
+	drawCircle(GL_TRIANGLE_FAN, false, false, 0, 0, 0, 0, 30, 0.8, 0.8, 1, 1, 1);
+	// Draw central vertical bar
+	
+	drawRect(0.1, -0.7, -0.1, -0.7, -0.1, 0.7, 0.1, 0.7, 0, 0, 0);
+	drawRect(0.3, 0.5, 0, 0.5, 0, 0.7, 0.3, 0.7, 0, 0, 0);
+	drawRect(-0.3, -0.5, 0, -0.5, 0, -0.7, -0.3, -0.7, 0, 0, 0);
+
+	drawRect(0.5, -0.1, -0.5, -0.1, -0.5, 0.1, 0.5, 0.1, 0, 0, 0);
+	drawRect(-0.3, -0.1, -0.5, -0.1, -0.5, 0.5, -0.3, 0.5, 0, 0, 0);
+	drawRect(0.3, 0.1, 0.5, 0.1, 0.5, -0.5, 0.3, -0.5, 0, 0, 0);
+
+}
 void display()
-{
+{// Clear the screen with a white background
+	glClearColor(1.0, 0, 0, 1.0);
+	glClear(GL_COLOR_BUFFER_BIT);
 	//--------------------------------
 	//	OpenGL drawing
 	//--------------------------------
-	switch (qNo) {
+	/*switch (qNo) {
 	case 1:
 		pahangFlag();
 		break;
@@ -222,10 +347,16 @@ void display()
 	case 5:
 		scotland();
 		break;
+	case 6:
+		flag();
+		hitler();
+		break;
 	default:
 		pahangFlag();
 		break;
-	}
+	}*/
+	flag();
+	hitler();
 	//--------------------------------
 	//	End of OpenGL drawing
 	//--------------------------------
@@ -246,7 +377,7 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int nCmdShow)
 	if (!RegisterClassEx(&wc)) return false;
 
 	HWND hWnd = CreateWindow(WINDOW_TITLE, WINDOW_TITLE, WS_OVERLAPPEDWINDOW,
-		CW_USEDEFAULT, CW_USEDEFAULT, 800, 600,
+		CW_USEDEFAULT, CW_USEDEFAULT, screenWidth, screenHeight,
 		NULL, NULL, wc.hInstance, NULL);
 
 	//--------------------------------
