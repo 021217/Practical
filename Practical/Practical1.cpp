@@ -2,6 +2,7 @@
 #include <Windows.h>
 #include <gl/GL.h>
 #include "math.h";
+#include <iostream>
 #pragma comment (lib, "OpenGL32.lib")
 
 #define WINDOW_TITLE "OpenGL Window"
@@ -9,6 +10,7 @@ int qNo = 1;
 float radius = 0.2;
 float x = 0, y = 0;
 float angle = 0;
+float angle2 = 0;
 float x2 = 0, y2 = 0;
 float PI = 3.14159;
 int noOfTri = 30;
@@ -22,12 +24,24 @@ float horizontal = 0;
 float vertical = 0;
 float rotate = 0;
 
+float rotationSpeed = 1;
+
+bool automaticRotate = false;
+bool clockwise = true;
+
 float R = 0, G = 0, B = 0;
+
+double deltaTime = 0.0; // Global variables for high-resolution timing
+LARGE_INTEGER frequency;    // Holds the frequency of the performance counter
+LARGE_INTEGER prevTime;     // Previous frame's time
+LARGE_INTEGER currentTime;  // Current frame's time
 
 LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
+	
 	switch (msg)
 	{
+
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		break;
@@ -55,11 +69,13 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 			break;
 		case VK_UP:
 		case 0x57:
-			vertical += 0.2;
+			//vertical += 0.2;
+			rotationSpeed += 1;
 			break;
 		case VK_DOWN:
 		case 0x53:
-			vertical -= 0.2;
+			//vertical -= 0.2;
+			rotationSpeed -= 1;
 			break;
 		case VK_LEFT:
 		case 0x41:
@@ -85,11 +101,26 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 			B = 1;
 			break;
 		case 0x51:
-			rotate -= 1;
+			rotate += 5 * rotationSpeed;
 			break;
 		case 0x45:
-			rotate += 1;
+			rotate -= 5 * rotationSpeed;
 			break;
+		case VK_SHIFT:
+			if (automaticRotate == false) {
+				automaticRotate = true;
+			}
+			else {
+				automaticRotate = false;
+			}
+			break;
+		case 0x43:
+			if (clockwise == true) {
+				clockwise = false;
+			}
+			else {
+				clockwise = true;
+			}
 		default:
 			qNo = 1;
 			break;
@@ -134,6 +165,23 @@ bool initPixelFormat(HDC hdc)
 	}
 }
 //--------------------------------------------------------------------
+// Initialization function to set up the performance counter
+void InitDeltaTime() {
+	if (!QueryPerformanceFrequency(&frequency)) {
+		std::cerr << "QueryPerformanceFrequency failed!" << std::endl;
+		exit(1);
+	}
+	QueryPerformanceCounter(&prevTime); // Initialize the previous time
+}
+
+// Update function to calculate delta time
+void UpdateDeltaTime() {
+	QueryPerformanceCounter(&currentTime); // Get the current time
+	deltaTime = static_cast<double>(currentTime.QuadPart - prevTime.QuadPart) / frequency.QuadPart;
+	prevTime = currentTime; // Update the previous time
+}
+
+
 void pahangFlag() {
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
@@ -370,12 +418,54 @@ void flag() {
 
 }
 
-void translation() {
+void blade(float angle) {
+	glPushMatrix();
+	glTranslatef(0, 0.55, 0);  // Move to the circle center
+	glRotatef(angle + rotate, 0, 0, 1);  // Rotate to the right around the circle center
+	glTranslatef(0, -0.55, 0); // Move back to the original position
+	drawRect(0.01, 0.55, -0.01, 0.55, -0.01, 1, 0.01, 1, 0.5, 0.2, 0.2);
+	drawRect(0.2, 0.7, 0.01, 0.7, 0.01, 1, 0.2, 1, 1, 1, 1);
+	glPopMatrix();
+}
 
+void windmill() {
+	//Grass
+	//drawRect(1.0, -1.0, -1.0, -1.0, -1.0, 0, 1.0, 0, 0, 1, 0.3);
+	drawCircle(GL_TRIANGLE_FAN, false, true, 0, 0, 0, -1, 30, 1.5, 1, 0.07, 0.37, 0);
+
+	//Building
+	drawRect(0.4, -0.3, -0.4, -0.3, -0.2, -0.1, 0.2, -0.1, 0.3, 0, 0);
+	drawRect(0.2, -0.1, -0.2, -0.1, -0.2, 0.4, 0.2, 0.4, 0.3, 0, 0);
+	drawTri(0.2, 0.4, -0.2, 0.4, 0, 0.7, 0.3, 0, 0);
+
+	//Fan
+	drawCircle(GL_TRIANGLE_FAN, false, false, 0, 0, 0, 0.55, 30, 0.03, 0.03, 0.5, 0.2, 0.2);
+
+	//Blade
+	// Rotated blades using the circle as the center
+	
+	blade(0);
+	blade(90);
+	blade(180);
+	blade(270);
+	
+}
+
+void drawCloud(float x, float y, float z) {
+	glPushMatrix();
+	glTranslatef(0, -0.5, 0);
+	glRotatef(angle2, 0, 0, 1);
+	glTranslatef(x, y, z);
+	drawCircle(GL_TRIANGLE_FAN, false, false, 0, 0, 0, 0, 30, 0.1, 0.1, 1, 1, 1);
+	drawCircle(GL_TRIANGLE_FAN, false, false, 0, 0, 0.1, 0.05, 30, 0.15, 0.1, 1, 1, 1);
+	drawCircle(GL_TRIANGLE_FAN, false, false, 0, 0, -0.15, 0.05, 30, 0.1, 0.05, 1, 1, 1);
+	drawCircle(GL_TRIANGLE_FAN, false, false, 0, 0, -0.1, 0.1, 30, 0.1, 0.1, 1, 1, 1);
+	drawCircle(GL_TRIANGLE_FAN, false, false, 0, 0, -0.1, -0.05, 30, 0.1, 0.1, 1, 1, 1);
+	glPopMatrix();
 }
 void display()
 {// Clear the screen with a white background
-	glClearColor(0, 0, 0, 1.0);
+	glClearColor(0.0f, 1.0f, 1.0f, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT);
 	//--------------------------------
 	//	OpenGL drawing
@@ -455,19 +545,16 @@ void display()
 	glPopMatrix();
 	glPopMatrix();
 	glPopMatrix();*/
+	
+	drawCloud(0.8,1.2,0);
+	drawCloud(0.3,1,0);
+	drawCloud(-0.4,0.88,0);
+	glPushMatrix();
+	glTranslatef(0, -0.3, 0);
+	windmill();
+	glPopMatrix();
 
-	glShadeModel(GL_FLAT);
-	glBegin(GL_POLYGON);
-
-	glColor3f(1.0f, 0.0f, 0.0f); // Red
-	glVertex2f(-0.5f, -0.5f);
-
-	glColor3f(1.0f, 1.0f, 1.0f); // White
-	glVertex2f(0.5f, -0.5f);
-
-	glVertex2f(0.0f, 0.5f); // Last vertex
-	glEnd();
-
+	
 
 	//--------------------------------
 	//	End of OpenGL drawing
@@ -515,9 +602,10 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int nCmdShow)
 
 	MSG msg;
 	ZeroMemory(&msg, sizeof(msg));
-
+	InitDeltaTime();
 	while (true)
 	{
+		UpdateDeltaTime();
 		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
 		{
 			if (msg.message == WM_QUIT) break;
@@ -525,6 +613,17 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int nCmdShow)
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		}
+		if (automaticRotate == true) {
+			if (clockwise == true) {
+				rotate -= 5 * rotationSpeed * deltaTime;
+			}
+			else {
+				rotate += 5 * rotationSpeed * deltaTime;
+			}
+			
+		}
+
+		angle2 += 50 * deltaTime;
 
 		display();
 
