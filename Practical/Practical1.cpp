@@ -3,6 +3,8 @@
 #include <gl/GL.h>
 #include "math.h";
 #include <iostream>
+#include <random>
+
 #pragma comment (lib, "OpenGL32.lib")
 
 #define WINDOW_TITLE "OpenGL Window"
@@ -28,6 +30,19 @@ float rotationSpeed = 1;
 
 bool automaticRotate = false;
 bool clockwise = true;
+
+float blackMoving = -1;
+float whiteMoving = -1.4;
+
+bool day = true;
+float dayChange = 0;
+
+
+bool heil = false;
+
+float timer = 0.0f;
+
+bool flip = false;
 
 float R = 0, G = 0, B = 0;
 
@@ -121,6 +136,22 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 			else {
 				clockwise = true;
 			}
+		case 0x48:
+			if (heil == true) {
+				heil = false;
+			}
+			else {
+				heil = true;
+			}
+			break;
+		case 0x5A:
+			if (day == true) {
+				day = false;
+			}
+			else {
+				day = true;
+			}
+			break;
 		default:
 			qNo = 1;
 			break;
@@ -180,6 +211,17 @@ void UpdateDeltaTime() {
 	deltaTime = static_cast<double>(currentTime.QuadPart - prevTime.QuadPart) / frequency.QuadPart;
 	prevTime = currentTime; // Update the previous time
 }
+
+float randomBetweenNegativeOneAndThree(float x, float y) {
+	// Ensure valid range (swap if necessary)
+	if (x > y) std::swap(x, y);
+
+	std::random_device rd;  // Random device for non-deterministic seed
+	std::mt19937 gen(rd()); // Mersenne Twister engine
+	std::uniform_real_distribution<float> dist(x, y); // Create distribution
+	return dist(gen); // Generate and return the random number
+}
+
 
 
 void pahangFlag() {
@@ -364,6 +406,41 @@ void drawCircle(GLenum glType, boolean startingFromCenter, boolean semiCircle, f
 	glEnd();
 }
 
+void drawCircle(GLenum glType, bool startingFromCenter, bool semiCircle,
+	float centerX, float centerY, float posX, float posY,
+	int totalTriangle, float outerRadiusX, float outerRadiusY,
+	float innerRadiusX, float innerRadiusY, float R, float G, float B) {
+	int divide = 1;
+
+	if (semiCircle) {
+		divide = 2;
+	}
+
+	glBegin(glType);
+
+	glColor3f(R, G, B); // Color for the circle
+
+	// Draw vertices for the band
+	for (int i = 0; i <= totalTriangle / divide; i++) {
+		float angle = i * 2.0f * 3.14159265359f / totalTriangle; // Angle for each triangle vertex
+
+		// Outer edge of the band
+		float xOuter = posX + outerRadiusX * cos(angle);
+		float yOuter = posY + outerRadiusY * sin(angle);
+
+		// Inner edge of the band
+		float xInner = posX + innerRadiusX * cos(angle);
+		float yInner = posY + innerRadiusY * sin(angle);
+
+		// Add both inner and outer vertices
+		glVertex2f(xOuter, yOuter);
+		glVertex2f(xInner, yInner);
+	}
+
+	glEnd();
+}
+
+
 void drawLine(float x1, float y1, float x2, float y2, float R, float G, float B, float lineWidth) {
 	glLineWidth(lineWidth);
 	glBegin(GL_LINES);
@@ -424,7 +501,7 @@ void blade(float angle) {
 	glRotatef(angle + rotate, 0, 0, 1);  // Rotate to the right around the circle center
 	glTranslatef(0, -0.55, 0); // Move back to the original position
 	drawRect(0.01, 0.55, -0.01, 0.55, -0.01, 1, 0.01, 1, 0.5, 0.2, 0.2);
-	drawRect(0.2, 0.7, 0.01, 0.7, 0.01, 1, 0.2, 1, 1, 1, 1);
+	drawRect(0.2, 0.7, 0.01, 0.7, 0.01, 1, 0.2, 1, 0, 0, 0);
 	glPopMatrix();
 }
 
@@ -438,22 +515,32 @@ void windmill() {
 	drawRect(0.2, -0.1, -0.2, -0.1, -0.2, 0.4, 0.2, 0.4, 0.3, 0, 0);
 	drawTri(0.2, 0.4, -0.2, 0.4, 0, 0.7, 0.3, 0, 0);
 
-	//Fan
-	drawCircle(GL_TRIANGLE_FAN, false, false, 0, 0, 0, 0.55, 30, 0.03, 0.03, 0.5, 0.2, 0.2);
 
-	//Blade
-	// Rotated blades using the circle as the center
-	
 	blade(0);
 	blade(90);
 	blade(180);
 	blade(270);
+
+	//Fan
+	glPushMatrix();
+	glScalef(0.3, 0.3, 1);
+	glTranslatef(0, 1.9, 0);
+	//flag();
+	hitler();
+	glPopMatrix();
+	drawCircle(GL_TRIANGLE_FAN, false, false, 0, 0, 0, 0.55, 30, 0.03, 0.02, 0, 0, 0);
+	
+
+	//Blade
+	// Rotated blades using the circle as the center
+	
+	
 	
 }
 
 void drawCloud(float x, float y, float z) {
 	glPushMatrix();
-	glTranslatef(0, -0.5, 0);
+	glTranslatef(0, -2, 0);
 	glRotatef(angle2, 0, 0, 1);
 	glTranslatef(x, y, z);
 	drawCircle(GL_TRIANGLE_FAN, false, false, 0, 0, 0, 0, 30, 0.1, 0.1, 1, 1, 1);
@@ -463,6 +550,78 @@ void drawCloud(float x, float y, float z) {
 	drawCircle(GL_TRIANGLE_FAN, false, false, 0, 0, -0.1, -0.05, 30, 0.1, 0.1, 1, 1, 1);
 	glPopMatrix();
 }
+
+void myGuy() {
+	glPushMatrix();
+	glTranslatef(blackMoving, -0.5, 0);
+	drawCircle(GL_TRIANGLE_FAN, false, false, 0, 0, 0, 0, 30, 0.1, 0.1, 0, 0, 0);
+	drawLine(0, 0, 0, -0.3, 0, 0, 0, 10);
+
+
+	glPushMatrix();
+	if (flip == true) {
+		glScalef(1, -1, 1);
+		glTranslatef(0, 0.3, 0);
+	}
+
+	drawCircle(GL_TRIANGLE_STRIP, false, true,
+		0, 0, 0, -0.2,
+		30, 0.1, 0.1, 0.08, 0.08,
+		0, 0, 0); // Outer and inner radii adjusted
+	glPopMatrix();
+	drawCircle(GL_TRIANGLE_STRIP, false, true,
+		0, 0, 0, -0.4,
+		30, 0.1, 0.1, 0.08, 0.08,
+		0, 0, 0); // Outer and inner radii adjusted
+	glPopMatrix();
+}
+
+void zeArmy() {
+	glPushMatrix();
+	glTranslatef(whiteMoving, -0.3, 0);
+	drawCircle(GL_TRIANGLE_FAN, false, false, 0, 0, 0, 0, 30, 0.1, 0.1, 1, 1, 1);
+	drawRect(0.02, -0.02, -0.02, -0.02, -0.02, 0, 0.02, 0, 0, 0, 0);
+	//Ze Hand
+	drawLine(0, 0, 0, -0.3, 1, 1, 1, 10);
+	if (heil == true) {
+		drawLine(0, -0.15, 0.15, -0.1, 1, 1, 1, 10);
+		drawLine(0, -0.15, -0.1, -0.15, 1, 1, 1, 10);
+		drawLine(-0.1, -0.15, 0, -0.2, 1, 1, 1, 10);
+	}
+	else {
+		drawLine(0, -0.15, 0.15, -0.2, 1, 1, 1, 10);
+		drawLine(0, -0.15, -0.15, -0.2, 1, 1, 1, 10);
+	}
+	
+	drawCircle(GL_TRIANGLE_STRIP, false, true,
+		0, 0, 0, -0.4,
+		30, 0.1, 0.1, 0.08, 0.08,
+		1, 1, 1); // Outer and inner radii adjusted
+	glPopMatrix();
+}
+
+void drawDayNightBackground() {
+	glPushMatrix();
+	glTranslatef(0, dayChange, 0);
+	glShadeModel(GL_SMOOTH);
+	glBegin(GL_QUADS);
+	glColor3f(0, 0, 0.4);
+	glVertex2f(1, -3);
+	glVertex2f(-1, -3);
+	glColor3f(0, 1, 1);
+	glVertex2f(-1, 1);
+	glVertex2f(1, 1);
+	glEnd();
+	drawCircle(GL_TRIANGLE_FAN, false, false, 0, 0, 1, 1, 30, 0.4, 0.4, 1, 0.5, 0);
+	drawCircle(GL_TRIANGLE_FAN, false, false, 0, 0, -1, -1, 30, 0.4, 0.4, 1, 1, 1);
+	for (int i = 0; i < 5; i++) {
+		drawCircle(GL_TRIANGLE_FAN, false, false, 0, 0, randomBetweenNegativeOneAndThree(1, -1), randomBetweenNegativeOneAndThree(-3, -1), 30, 0.005, 0.005, 1, 1, 1);
+	}
+	/*drawRect(1, -1, -1, -1, -1, 1, 1, 1, 0, 1, 1);
+	drawRect(1, -3, -1, -3, -1, -1, 1, -1, 0, 0, 0.4);*/
+	glPopMatrix();
+}
+
 void display()
 {// Clear the screen with a white background
 	glClearColor(0.0f, 1.0f, 1.0f, 1.0);
@@ -545,14 +704,24 @@ void display()
 	glPopMatrix();
 	glPopMatrix();
 	glPopMatrix();*/
-	
-	drawCloud(0.8,1.2,0);
-	drawCloud(0.3,1,0);
-	drawCloud(-0.4,0.88,0);
+
+	drawDayNightBackground();
+	drawCloud(0.8,2.3,0);
+	drawCloud(0.3,2.5,0);
+	drawCloud(-0.4,2.8,0);
 	glPushMatrix();
 	glTranslatef(0, -0.3, 0);
 	windmill();
 	glPopMatrix();
+
+	myGuy();
+	zeArmy();
+
+	
+	
+
+	
+
 
 	
 
@@ -624,6 +793,41 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int nCmdShow)
 		}
 
 		angle2 += 50 * deltaTime;
+		blackMoving += 0.3 * deltaTime;
+		if (blackMoving > 1.5) {
+			blackMoving = -1.5;
+		}
+
+		whiteMoving += 0.3 * deltaTime;
+		if (whiteMoving > 1.5) {
+			whiteMoving = -1.5;
+		}
+
+		timer += 1.0 * deltaTime;
+		if (timer >= 1) {
+			if (flip == true) {
+				flip = false;
+			}
+			else {
+				flip = true;
+			}
+			timer = 0;
+		}
+
+		if (!day && dayChange >= 0 && dayChange < 2) {
+			dayChange += 1.0f * deltaTime;
+			if (dayChange > 2) {
+				dayChange = 2; // Clamp to upper limit
+			}
+		}
+		else if (day && dayChange > 0 && dayChange <= 2) {
+			dayChange -= 1.0f * deltaTime;
+			if (dayChange < 0) {
+				dayChange = 0; // Clamp to lower limit
+			}
+		}
+
+
 
 		display();
 
