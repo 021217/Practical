@@ -18,5 +18,8 @@
     <ClCompile Include="Practical1.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Practical2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

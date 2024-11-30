@@ -14,9 +14,15 @@ float PI = 3.14159;
 int noOfTri = 30;
 
 float screenWidth = 800;
-float screenHeight = 600;
+float screenHeight = 800;
 // Define the screen width and height
 float aspect = (float)screenHeight / (float)screenWidth; // Calculate aspect ratio
+
+float horizontal = 0;
+float vertical = 0;
+float rotate = 0;
+
+float R = 0, G = 0, B = 0;
 
 LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
@@ -46,6 +52,43 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 			break;
 		case 0x36:
 			qNo = 6;
+			break;
+		case VK_UP:
+		case 0x57:
+			vertical += 0.2;
+			break;
+		case VK_DOWN:
+		case 0x53:
+			vertical -= 0.2;
+			break;
+		case VK_LEFT:
+		case 0x41:
+			horizontal -= 0.05;
+			break;
+		case VK_RIGHT:
+		case 0x44:
+			horizontal += 0.05;
+			break;
+		case 0x52:
+			R = 1;
+			G = 0;
+			B = 0;
+			break;
+		case 0x47:
+			R = 0;
+			G = 1;
+			B = 0;
+			break;
+		case 0x42:
+			R = 0;
+			G = 0;
+			B = 1;
+			break;
+		case 0x51:
+			rotate -= 1;
+			break;
+		case 0x45:
+			rotate += 1;
 			break;
 		default:
 			qNo = 1;
@@ -312,6 +355,8 @@ void hitler() {
 }
 
 void flag() {
+	glClearColor(1.0, 0, 0, 1.0);
+	glClear(GL_COLOR_BUFFER_BIT);
 	drawCircle(GL_TRIANGLE_FAN, false, false, 0, 0, 0, 0, 30, 0.8, 0.8, 1, 1, 1);
 	// Draw central vertical bar
 	
@@ -324,9 +369,13 @@ void flag() {
 	drawRect(0.3, 0.1, 0.5, 0.1, 0.5, -0.5, 0.3, -0.5, 0, 0, 0);
 
 }
+
+void translation() {
+
+}
 void display()
 {// Clear the screen with a white background
-	glClearColor(1.0, 0, 0, 1.0);
+	glClearColor(0, 0, 0, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT);
 	//--------------------------------
 	//	OpenGL drawing
@@ -355,8 +404,71 @@ void display()
 		pahangFlag();
 		break;
 	}*/
-	flag();
-	hitler();
+	/*glLoadIdentity();
+	glScalef(0.5, 0.5, 0.5);
+	glRotatef(45, 0, 0, 1);*/
+	
+	//glTranslatef(0.5, 0, 0);
+	
+	//flag();
+	//hitler();
+	
+	
+	/*drawRect(-0.5, 0, -0.5, 0.5, 0.5, 0.5, 0.5, 0, 1,1, 0);
+	drawTri(-0.5, 0.0, 0.0, 0.5, 0.5, 0.0, 1, 1, 1);
+	glLoadIdentity();
+	drawCircle(GL_TRIANGLE_FAN, false, false, 0, 0, 0.5, 0, 30, 0.2, 0.4, 1, 0.5, 0.5);
+	drawCircle(GL_LINE_STRIP, false, false, 0, 0, 0.5, 0, 30, 0.1, 0.3, 0, 0, 0);
+	glTranslatef(horizontal,vertical,0);
+	glRotatef(rotate, 0, 0, 1);
+	drawCircle(GL_TRIANGLE_FAN, false, false, 0, 0, 0.5, -0.5, 30, 0.1, 0.1, R, G, B);
+	drawCircle(GL_TRIANGLE_FAN, false, false, 0, 0, 0.55, -0.5, 30, 0.1, 0.12, R, G, B);
+	drawCircle(GL_TRIANGLE_FAN, false, false, 0, 0, 0.52, -0.3, 30, 0.1, 0.2, R, G, B);*/
+
+	/*drawTri(0.1,0.1,-0.1,0.1,0,0.2,0,0,0);
+	drawTri(0.2,0.1,0.1,0.1,0.1,0,0,0,0);
+	drawTri(-0.2,0.1,-0.1,0.1,-0.1,0,0,0,0);
+	drawTri(0,-0.05,-0.1,0,-0.15,-0.1,0,0,0);
+	drawTri(0, -0.05,0.1, 0,0.15,-0.1,0,0,0);
+	drawRect(0.1, 0, -0.1, 0, -0.1, 0.1, 0.1, 0.1, 0, 0, 0);*/
+
+	/*glPushMatrix();
+	glScalef(0.5, 0.5, 0.5);
+	glPushMatrix();
+	glTranslatef(0, 0.5, 0);
+	drawTri(-0.5, 0, 0, 0.5, 0.5, 0, 1, 0, 0);
+	glPopMatrix();
+
+	glPushMatrix();
+	glRotatef(45, 0, 0, 1);
+
+	glPushMatrix();
+	glTranslatef(-0.5, 0, 0);
+	drawRect(-0.5, 0, -0.5, 0.5, 0.5, 0.5, 0.5, 0, 0, 1, 0);
+	glPopMatrix();
+
+	
+
+	glPushMatrix();
+	glTranslatef(0.5, 0, 0);
+	drawRect(-0.5, 0, -0.5, 0.5, 0.5, 0.5, 0.5, 0, 0, 0, 1);
+	glPopMatrix();
+	glPopMatrix();
+	glPopMatrix();*/
+
+	glShadeModel(GL_FLAT);
+	glBegin(GL_POLYGON);
+
+	glColor3f(1.0f, 0.0f, 0.0f); // Red
+	glVertex2f(-0.5f, -0.5f);
+
+	glColor3f(1.0f, 1.0f, 1.0f); // White
+	glVertex2f(0.5f, -0.5f);
+
+	glVertex2f(0.0f, 0.5f); // Last vertex
+	glEnd();
+
+
 	//--------------------------------
 	//	End of OpenGL drawing
 	//--------------------------------
