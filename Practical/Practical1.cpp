@@ -25,6 +25,7 @@ float aspect = (float)screenHeight / (float)screenWidth; // Calculate aspect rat
 float horizontal = 0;
 float vertical = 0;
 float rotate = 0;
+float scale = 1;
 
 float rotationSpeed = 1;
 
@@ -84,12 +85,12 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 			break;
 		case VK_UP:
 		case 0x57:
-			//vertical += 0.2;
+			vertical += 0.2;
 			rotationSpeed += 1;
 			break;
 		case VK_DOWN:
 		case 0x53:
-			//vertical -= 0.2;
+			vertical -= 0.2;
 			rotationSpeed -= 1;
 			break;
 		case VK_LEFT:
@@ -127,6 +128,14 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 			}
 			else {
 				automaticRotate = false;
+			}
+			break;
+		case VK_CONTROL:
+			if (scale == 1) {
+				scale = 2;
+			}
+			else {
+				scale = 1;
 			}
 			break;
 		case 0x43:
@@ -440,6 +449,43 @@ void drawCircle(GLenum glType, bool startingFromCenter, bool semiCircle,
 	glEnd();
 }
 
+void drawStar(float centerX, float centerY, float radiusOuter, float radiusInner, int numPoints, float R, float G, float B) {
+	float angleStep = 2.0f * 3.14159265359f / numPoints; // Angle between points
+	float halfAngleStep = angleStep / 2.0f; // Half-angle step for inner points
+
+	glBegin(GL_TRIANGLES);
+	glColor3f(R, G, B);
+
+	for (int i = 0; i < numPoints; ++i) {
+		// Calculate outer point
+		float angleOuter = i * angleStep;
+		float xOuter = centerX + radiusOuter * cos(angleOuter);
+		float yOuter = centerY + radiusOuter * sin(angleOuter);
+
+		// Calculate inner point
+		float angleInner = angleOuter + halfAngleStep;
+		float xInner = centerX + radiusInner * cos(angleInner);
+		float yInner = centerY + radiusInner * sin(angleInner);
+
+		// Calculate next outer point
+		float angleNextOuter = (i + 1) * angleStep;
+		float xNextOuter = centerX + radiusOuter * cos(angleNextOuter);
+		float yNextOuter = centerY + radiusOuter * sin(angleNextOuter);
+
+		// Draw triangle
+		glVertex2f(centerX, centerY);
+		glVertex2f(xOuter, yOuter);
+		glVertex2f(xInner, yInner);
+
+		// Draw triangle to the next outer point
+		glVertex2f(xInner, yInner);
+		glVertex2f(xNextOuter, yNextOuter);
+		glVertex2f(centerX, centerY);
+	}
+
+	glEnd();
+}
+
 
 void drawLine(float x1, float y1, float x2, float y2, float R, float G, float B, float lineWidth) {
 	glLineWidth(lineWidth);
@@ -622,37 +668,99 @@ void drawDayNightBackground() {
 	glPopMatrix();
 }
 
+void drawMyCube(float size) {
+	
+
+	glBegin(GL_QUADS);
+	glColor3f(1, 0, 0);
+	glVertex3f(0, 0, size);
+	glVertex3f(size, 0, size);
+	glVertex3f(size, 0, 0);
+	glVertex3f(0, 0, 0);
+
+	glColor3f(1, 1, 0);
+	glVertex3f(0, 0, 0);
+	glVertex3f(0, size, 0);
+	glVertex3f(0, size, size);
+	glVertex3f(0, 0, size);
+
+	glColor3f(0, 1, 1);
+	glVertex3f(0, 0, size);
+	glVertex3f(0, size, size);
+	glVertex3f(size, size, size);
+	glVertex3f(size, 0, size);
+
+	glColor3f(0, 1, 0);
+	glVertex3f(size, 0, size);
+	glVertex3f(size, size, size);
+	glVertex3f(size, size, 0);
+	glVertex3f(size, 0, 0);
+
+	glColor3f(1, 0, 1);
+	glVertex3f(size, 0, 0);
+	glVertex3f(0, 0, 0);
+	glVertex3f(0, size, 0);
+	glVertex3f(size, size, 0);
+
+	glColor3f(1, 1, 1);
+	glVertex3f(size, size, 0);
+	glVertex3f(0, size, 0);
+	glVertex3f(0, size, size);
+	glVertex3f(size, size, size);
+
+	glEnd();
+}
+
+void drawPyramid(float size) {
+	glLineWidth(5.0);
+	glBegin(GL_LINE_LOOP);
+	glColor3f(1, 0, 0);
+	glVertex3f(0, 0, size);
+	glVertex3f(size, 0, size);
+	glVertex3f(size, 0, 0);
+	glVertex3f(0, 0, 0);
+	glVertex3f(size / 2, size, size / 2);
+	glVertex3f(0, 0, size);
+	glVertex3f(size / 2, size, size / 2);
+	glVertex3f(size, 0, size);
+	glVertex3f(size / 2, size, size / 2);
+	glVertex3f(size, 0, 0);
+	glVertex3f(size / 2, size, size / 2);
+	glVertex3f(0, 0, 0);
+	glEnd();
+}
 void display()
 {// Clear the screen with a white background
-	glClearColor(0.0f, 1.0f, 1.0f, 1.0);
-	glClear(GL_COLOR_BUFFER_BIT);
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0);
+	//glEnable(GL_DEPTH_TEST);
+	glClear(GL_COLOR_BUFFER_BIT );
 	//--------------------------------
 	//	OpenGL drawing
 	//--------------------------------
-	/*switch (qNo) {
-	case 1:
-		pahangFlag();
-		break;
-	case 2:
-		negeriSembilan();
-		break;
-	case 3:
-		england();
-		break;
-	case 4:
-		japan();
-		break;
-	case 5:
-		scotland();
-		break;
-	case 6:
-		flag();
-		hitler();
-		break;
-	default:
-		pahangFlag();
-		break;
-	}*/
+	//switch (qNo) {
+	//case 1:
+	//	pahangFlag();
+	//	break;
+	//case 2:
+	//	negeriSembilan();
+	//	break;
+	//case 3:
+	//	england();
+	//	break;
+	//case 4:
+	//	japan();
+	//	break;
+	//case 5:
+	//	scotland();
+	//	break;
+	//case 6:
+	//	flag();
+	//	hitler();
+	//	break;
+	//default:
+	//	pahangFlag();
+	//	break;
+	//}
 	/*glLoadIdentity();
 	glScalef(0.5, 0.5, 0.5);
 	glRotatef(45, 0, 0, 1);*/
@@ -661,68 +769,87 @@ void display()
 	
 	//flag();
 	//hitler();
-	
-	
-	/*drawRect(-0.5, 0, -0.5, 0.5, 0.5, 0.5, 0.5, 0, 1,1, 0);
-	drawTri(-0.5, 0.0, 0.0, 0.5, 0.5, 0.0, 1, 1, 1);
-	glLoadIdentity();
-	drawCircle(GL_TRIANGLE_FAN, false, false, 0, 0, 0.5, 0, 30, 0.2, 0.4, 1, 0.5, 0.5);
-	drawCircle(GL_LINE_STRIP, false, false, 0, 0, 0.5, 0, 30, 0.1, 0.3, 0, 0, 0);
-	glTranslatef(horizontal,vertical,0);
-	glRotatef(rotate, 0, 0, 1);
-	drawCircle(GL_TRIANGLE_FAN, false, false, 0, 0, 0.5, -0.5, 30, 0.1, 0.1, R, G, B);
-	drawCircle(GL_TRIANGLE_FAN, false, false, 0, 0, 0.55, -0.5, 30, 0.1, 0.12, R, G, B);
-	drawCircle(GL_TRIANGLE_FAN, false, false, 0, 0, 0.52, -0.3, 30, 0.1, 0.2, R, G, B);*/
-
-	/*drawTri(0.1,0.1,-0.1,0.1,0,0.2,0,0,0);
-	drawTri(0.2,0.1,0.1,0.1,0.1,0,0,0,0);
-	drawTri(-0.2,0.1,-0.1,0.1,-0.1,0,0,0,0);
-	drawTri(0,-0.05,-0.1,0,-0.15,-0.1,0,0,0);
-	drawTri(0, -0.05,0.1, 0,0.15,-0.1,0,0,0);
-	drawRect(0.1, 0, -0.1, 0, -0.1, 0.1, 0.1, 0.1, 0, 0, 0);*/
-
-	/*glPushMatrix();
-	glScalef(0.5, 0.5, 0.5);
 	glPushMatrix();
-	glTranslatef(0, 0.5, 0);
-	drawTri(-0.5, 0, 0, 0.5, 0.5, 0, 1, 0, 0);
+	glRotatef(rotate, 0, 0, 0);
+	glTranslatef(vertical, horizontal, 0);
+	glScalef(scale, scale, 0);
+	drawStar(0.0f, 0.0f, 0.5f, 0.2f, 5, R, G, B); // Yellow star
 	glPopMatrix();
 
-	glPushMatrix();
-	glRotatef(45, 0, 0, 1);
+	//drawTri(0.1,0.1,-0.1,0.1,0,0.2,0,0,0);
+	//drawTri(0.2,0.1,0.1,0.1,0.1,0,0,0,0);
+	//drawTri(-0.2,0.1,-0.1,0.1,-0.1,0,0,0,0);
+	//drawTri(0,-0.05,-0.1,0,-0.15,-0.1,0,0,0);
+	//drawTri(0, -0.05,0.1, 0,0.15,-0.1,0,0,0);
+	//drawRect(0.1, 0, -0.1, 0, -0.1, 0.1, 0.1, 0.1, 0, 0, 0);
 
-	glPushMatrix();
-	glTranslatef(-0.5, 0, 0);
-	drawRect(-0.5, 0, -0.5, 0.5, 0.5, 0.5, 0.5, 0, 0, 1, 0);
-	glPopMatrix();
+	//glPushMatrix();
+	//glScalef(0.5, 0.5, 0.5);
+	//glPushMatrix();
+	//glTranslatef(0, 0.5, 0);
+	//drawTri(-0.5, 0, 0, 0.5, 0.5, 0, 1, 0, 0);
+	//glPopMatrix();
+
+	//glPushMatrix();
+	//glRotatef(45, 0, 0, 1);
+
+	//glPushMatrix();
+	//glTranslatef(-0.5, 0, 0);
+	//drawRect(-0.5, 0, -0.5, 0.5, 0.5, 0.5, 0.5, 0, 0, 1, 0);
+	//glPopMatrix();
+
+	//
+
+	//glPushMatrix();
+	//glTranslatef(0.5, 0, 0);
+	//drawRect(-0.5, 0, -0.5, 0.5, 0.5, 0.5, 0.5, 0, 0, 0, 1);
+	//glPopMatrix();
+	//glPopMatrix();
+	//glPopMatrix();
+
+	//drawDayNightBackground();
+	//drawCloud(0.8,2.3,0);
+	//drawCloud(0.3,2.5,0);
+	//drawCloud(-0.4,2.8,0);
+	//glPushMatrix();
+	//glTranslatef(0, -0.3, 0);
+	//windmill();
+	//glPopMatrix();
+
+	//myGuy();
+	//zeArmy();
+
+	//glRotatef(0.1, 0, 1, 0.1);
+	//drawMyCube(1);
+	//drawMyCube(0.5);
+	//drawMyCube(-0.5);
+	//hitler();
+
+
+
+		//// Create a random device to seed the random number generator
+		//std::random_device rd;
+
+		//// Create a Mersenne Twister generator seeded with random device
+		//std::mt19937 gen(rd());
+
+		//// Define a uniform real distribution in the desired range
+		//std::uniform_real_distribution<> distrib(-1.0, 1.0); // Range [0.0, 1.0]
+
+		//// Generate and print a random floating-point number
+		//float randomFloat = distrib(gen);
+
+
+//glRotatef(randomFloat, randomFloat, randomFloat, randomFloat);
+//drawPyramid(randomFloat);
+//drawPyramid(randomFloat);
+//
+//glRotatef(randomFloat, randomFloat, randomFloat, randomFloat);
+//drawPyramid(randomFloat);
+//drawPyramid(randomFloat);
+
 
 	
-
-	glPushMatrix();
-	glTranslatef(0.5, 0, 0);
-	drawRect(-0.5, 0, -0.5, 0.5, 0.5, 0.5, 0.5, 0, 0, 0, 1);
-	glPopMatrix();
-	glPopMatrix();
-	glPopMatrix();*/
-
-	drawDayNightBackground();
-	drawCloud(0.8,2.3,0);
-	drawCloud(0.3,2.5,0);
-	drawCloud(-0.4,2.8,0);
-	glPushMatrix();
-	glTranslatef(0, -0.3, 0);
-	windmill();
-	glPopMatrix();
-
-	myGuy();
-	zeArmy();
-
-	
-	
-
-	
-
-
 	
 
 	//--------------------------------
@@ -731,8 +858,11 @@ void display()
 }
 //--------------------------------------------------------------------
 
+
+
 int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int nCmdShow)
 {
+
 	WNDCLASSEX wc;
 	ZeroMemory(&wc, sizeof(WNDCLASSEX));
 
