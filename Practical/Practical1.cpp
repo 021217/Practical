@@ -770,8 +770,8 @@ void display()
 	//flag();
 	//hitler();
 	glPushMatrix();
-	glRotatef(rotate, 0, 0, 0);
-	glTranslatef(vertical, horizontal, 0);
+	glRotatef(rotate, 0, 0, 1);
+	glTranslatef(horizontal, vertical, 0);
 	glScalef(scale, scale, 0);
 	drawStar(0.0f, 0.0f, 0.5f, 0.2f, 5, R, G, B); // Yellow star
 	glPopMatrix();
