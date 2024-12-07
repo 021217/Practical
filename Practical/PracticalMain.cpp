@@ -507,8 +507,6 @@
 //}
 //
 //void hitler() {
-//	glClearColor(0.0f, 0.0f, 0.0f, 1.0);
-//	glClear(GL_COLOR_BUFFER_BIT);
 //	//face
 //	drawCircle(GL_TRIANGLE_FAN, false, false, 0.0, 0.0, 0.0, 0.0, 30, 0.4, 0.5, 1.0, 0.87, 0.76);
 //	drawCircle(GL_LINE_LOOP, false, false, 0.0, 0.0, 0.0, 0.0, 30, 0.4, 0.5, 0, 0, 0);
@@ -553,40 +551,285 @@
 //
 //}
 //
+//void blade(float angle) {
+//	glPushMatrix();
+//	glTranslatef(0, 0.55, 0);  // Move to the circle center
+//	glRotatef(angle + rotate, 0, 0, 1);  // Rotate to the right around the circle center
+//	glTranslatef(0, -0.55, 0); // Move back to the original position
+//	drawRect(0.01, 0.55, -0.01, 0.55, -0.01, 1, 0.01, 1, 0.5, 0.2, 0.2);
+//	drawRect(0.2, 0.7, 0.01, 0.7, 0.01, 1, 0.2, 1, 0, 0, 0);
+//	glPopMatrix();
+//}
 //
+//void windmill() {
+//	//Grass
+//	//drawRect(1.0, -1.0, -1.0, -1.0, -1.0, 0, 1.0, 0, 0, 1, 0.3);
+//	drawCircle(GL_TRIANGLE_FAN, false, true, 0, 0, 0, -1, 30, 1.5, 1, 0.07, 0.37, 0);
+//
+//	//Building
+//	drawRect(0.4, -0.3, -0.4, -0.3, -0.2, -0.1, 0.2, -0.1, 0.3, 0, 0);
+//	drawRect(0.2, -0.1, -0.2, -0.1, -0.2, 0.4, 0.2, 0.4, 0.3, 0, 0);
+//	drawTri(0.2, 0.4, -0.2, 0.4, 0, 0.7, 0.3, 0, 0);
+//
+//
+//	blade(0);
+//	blade(90);
+//	blade(180);
+//	blade(270);
+//
+//	//Fan
+//	glPushMatrix();
+//	glScalef(0.3, 0.3, 1);
+//	glTranslatef(0, 1.9, 0);
+//	//flag();
+//	hitler();
+//	glPopMatrix();
+//	drawCircle(GL_TRIANGLE_FAN, false, false, 0, 0, 0, 0.55, 30, 0.03, 0.02, 0, 0, 0);
+//
+//
+//	//Blade
+//	// Rotated blades using the circle as the center
+//
+//
+//
+//}
+//
+//void drawCloud(float x, float y, float z) {
+//	glPushMatrix();
+//	glTranslatef(0, -2, 0);
+//	glRotatef(angle2, 0, 0, 1);
+//	glTranslatef(x, y, z);
+//	drawCircle(GL_TRIANGLE_FAN, false, false, 0, 0, 0, 0, 30, 0.1, 0.1, 1, 1, 1);
+//	drawCircle(GL_TRIANGLE_FAN, false, false, 0, 0, 0.1, 0.05, 30, 0.15, 0.1, 1, 1, 1);
+//	drawCircle(GL_TRIANGLE_FAN, false, false, 0, 0, -0.15, 0.05, 30, 0.1, 0.05, 1, 1, 1);
+//	drawCircle(GL_TRIANGLE_FAN, false, false, 0, 0, -0.1, 0.1, 30, 0.1, 0.1, 1, 1, 1);
+//	drawCircle(GL_TRIANGLE_FAN, false, false, 0, 0, -0.1, -0.05, 30, 0.1, 0.1, 1, 1, 1);
+//	glPopMatrix();
+//}
+//
+//void myGuy() {
+//	glPushMatrix();
+//	glTranslatef(blackMoving, -0.5, 0);
+//	drawCircle(GL_TRIANGLE_FAN, false, false, 0, 0, 0, 0, 30, 0.1, 0.1, 0, 0, 0);
+//	drawLine(0, 0, 0, -0.3, 0, 0, 0, 10);
+//
+//
+//	glPushMatrix();
+//	if (flip == true) {
+//		glScalef(1, -1, 1);
+//		glTranslatef(0, 0.3, 0);
+//	}
+//
+//	drawCircle(GL_TRIANGLE_STRIP, false, true,
+//		0, 0, 0, -0.2,
+//		30, 0.1, 0.1, 0.08, 0.08,
+//		0, 0, 0); // Outer and inner radii adjusted
+//	glPopMatrix();
+//	drawCircle(GL_TRIANGLE_STRIP, false, true,
+//		0, 0, 0, -0.4,
+//		30, 0.1, 0.1, 0.08, 0.08,
+//		0, 0, 0); // Outer and inner radii adjusted
+//	glPopMatrix();
+//}
+//
+//void zeArmy() {
+//	glPushMatrix();
+//	glTranslatef(whiteMoving, -0.3, 0);
+//	drawCircle(GL_TRIANGLE_FAN, false, false, 0, 0, 0, 0, 30, 0.1, 0.1, 1, 1, 1);
+//	drawRect(0.02, -0.02, -0.02, -0.02, -0.02, 0, 0.02, 0, 0, 0, 0);
+//	//Ze Hand
+//	drawLine(0, 0, 0, -0.3, 1, 1, 1, 10);
+//	if (heil == true) {
+//		drawLine(0, -0.15, 0.15, -0.1, 1, 1, 1, 10);
+//		drawLine(0, -0.15, -0.1, -0.15, 1, 1, 1, 10);
+//		drawLine(-0.1, -0.15, 0, -0.2, 1, 1, 1, 10);
+//	}
+//	else {
+//		drawLine(0, -0.15, 0.15, -0.2, 1, 1, 1, 10);
+//		drawLine(0, -0.15, -0.15, -0.2, 1, 1, 1, 10);
+//	}
+//
+//	drawCircle(GL_TRIANGLE_STRIP, false, true,
+//		0, 0, 0, -0.4,
+//		30, 0.1, 0.1, 0.08, 0.08,
+//		1, 1, 1); // Outer and inner radii adjusted
+//	glPopMatrix();
+//}
+//
+//void drawDayNightBackground() {
+//	glPushMatrix();
+//	glTranslatef(0, dayChange, 0);
+//	glShadeModel(GL_SMOOTH);
+//	glBegin(GL_QUADS);
+//	glColor3f(0, 0, 0.4);
+//	glVertex2f(1, -3);
+//	glVertex2f(-1, -3);
+//	glColor3f(0, 1, 1);
+//	glVertex2f(-1, 1);
+//	glVertex2f(1, 1);
+//	glEnd();
+//	drawCircle(GL_TRIANGLE_FAN, false, false, 0, 0, 1, 1, 30, 0.4, 0.4, 1, 0.5, 0);
+//	drawCircle(GL_TRIANGLE_FAN, false, false, 0, 0, -1, -1, 30, 0.4, 0.4, 1, 1, 1);
+//	for (int i = 0; i < 5; i++) {
+//		drawCircle(GL_TRIANGLE_FAN, false, false, 0, 0, randomBetweenNegativeOneAndThree(1, -1), randomBetweenNegativeOneAndThree(-3, -1), 30, 0.005, 0.005, 1, 1, 1);
+//	}
+//	/*drawRect(1, -1, -1, -1, -1, 1, 1, 1, 0, 1, 1);
+//	drawRect(1, -3, -1, -3, -1, -1, 1, -1, 0, 0, 0.4);*/
+//	glPopMatrix();
+//}
+//
+//void drawMyCube(float size) {
+//
+//
+//	glBegin(GL_QUADS);
+//	glColor3f(1, 0, 0);
+//	glVertex3f(0, 0, size);
+//	glVertex3f(size, 0, size);
+//	glVertex3f(size, 0, 0);
+//	glVertex3f(0, 0, 0);
+//
+//	glColor3f(1, 1, 0);
+//	glVertex3f(0, 0, 0);
+//	glVertex3f(0, size, 0);
+//	glVertex3f(0, size, size);
+//	glVertex3f(0, 0, size);
+//
+//	glColor3f(0, 1, 1);
+//	glVertex3f(0, 0, size);
+//	glVertex3f(0, size, size);
+//	glVertex3f(size, size, size);
+//	glVertex3f(size, 0, size);
+//
+//	glColor3f(0, 1, 0);
+//	glVertex3f(size, 0, size);
+//	glVertex3f(size, size, size);
+//	glVertex3f(size, size, 0);
+//	glVertex3f(size, 0, 0);
+//
+//	glColor3f(1, 0, 1);
+//	glVertex3f(size, 0, 0);
+//	glVertex3f(0, 0, 0);
+//	glVertex3f(0, size, 0);
+//	glVertex3f(size, size, 0);
+//
+//	glColor3f(1, 1, 1);
+//	glVertex3f(size, size, 0);
+//	glVertex3f(0, size, 0);
+//	glVertex3f(0, size, size);
+//	glVertex3f(size, size, size);
+//
+//	glEnd();
+//}
+//
+//void drawPyramid(float size) {
+//	glLineWidth(5.0);
+//	glBegin(GL_LINE_LOOP);
+//	glColor3f(1, 0, 0);
+//	glVertex3f(0, 0, size);
+//	glVertex3f(size, 0, size);
+//	glVertex3f(size, 0, 0);
+//	glVertex3f(0, 0, 0);
+//	glVertex3f(size / 2, size, size / 2);
+//	glVertex3f(0, 0, size);
+//	glVertex3f(size / 2, size, size / 2);
+//	glVertex3f(size, 0, size);
+//	glVertex3f(size / 2, size, size / 2);
+//	glVertex3f(size, 0, 0);
+//	glVertex3f(size / 2, size, size / 2);
+//	glVertex3f(0, 0, 0);
+//	glEnd();
+//}
+//
+//void drawCylinder(float br, float tr, float h) {
+//	GLUquadricObj* cylinder = NULL;
+//	cylinder = gluNewQuadric();
+//
+//	gluQuadricDrawStyle(cylinder, GLU_LINE);
+//	//gluQuadricDrawStyle(cylinder, GLU_FILL);
+//	gluCylinder(cylinder, br, tr, h, 50, 50);
+//
+//	gluDeleteQuadric(cylinder);
+//}
+//
+//void drawSphere(float size) {
+//	GLUquadricObj* sphere = NULL;
+//	sphere = gluNewQuadric();
+//
+//	gluQuadricDrawStyle(sphere, GLU_LINE);
+//	//gluQuadricDrawStyle(sphere, GLU_FILL);
+//	gluSphere(sphere, size, 30, 30);
+//
+//
+//	gluDeleteQuadric(sphere);
+//}
+//
+//void drawDisk(float r, float inr, float outr) {
+//	GLUquadricObj* disk = NULL;
+//	disk = gluNewQuadric();
+//	gluQuadricDrawStyle(disk, GLU_FILL);
+//	gluDisk(disk, inr, outr, 30, 30);
+//	gluDeleteQuadric(disk);
+//}
+//
+//void drawSphereWithoutGLU()
+//{
+//	const float PI = 3.141592f;
+//	GLfloat x, y, z, sliceA, stackA;
+//	GLfloat radius = 0.5;
+//	int sliceNo = 30, stackNo = 30;
+//
+//	for (sliceA = 0.0; sliceA < 2 * PI; sliceA += PI / sliceNo)
+//	{
+//		glBegin(GL_POLYGON);
+//		for (stackA = 0.0; stackA < 2 * PI; stackA += PI / stackNo)
+//		{
+//			x = radius * cos(stackA) * sin(sliceA);
+//			y = radius * sin(stackA) * sin(sliceA);
+//			z = radius * cos(sliceA);
+//			glVertex3f(x, y, z);
+//			x = radius * cos(stackA) * sin(sliceA + PI / stackNo);
+//			y = radius * sin(stackA) * sin(sliceA + PI / sliceNo);
+//			z = radius * cos(sliceA + PI / sliceNo);
+//			glVertex3f(x, y, z);
+//		}
+//		glEnd();
+//	}
+//}
 //
 //
 //void display()
 //{// Clear the screen with a white background
-//	//glClearColor(0.0f, 0.0f, 0.0f, 1.0);
-//	//glClear(GL_COLOR_BUFFER_BIT);
+//	glClearColor(0.0f, 0.0f, 0.0f, 1.0);
+//	//glEnable(GL_DEPTH_TEST);
+//	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+//	glClear(GL_COLOR_BUFFER_BIT);
 //	//--------------------------------
 //	//	OpenGL drawing
 //	//--------------------------------
-//	switch (qNo) {
-//	case 1:
-//		pahangFlag();
-//		break;
-//	case 2:
-//		negeriSembilan();
-//		break;
-//	case 3:
-//		england();
-//		break;
-//	case 4:
-//		japan();
-//		break;
-//	case 5:
-//		scotland();
-//		break;
-//	case 6:
-//		flag();
-//		hitler();
-//		break;
-//	default:
-//		pahangFlag();
-//		break;
-//	}
+//	//switch (qNo) {
+//	//case 1:
+//	//	pahangFlag();
+//	//	break;
+//	//case 2:
+//	//	negeriSembilan();
+//	//	break;
+//	//case 3:
+//	//	england();
+//	//	break;
+//	//case 4:
+//	//	japan();
+//	//	break;
+//	//case 5:
+//	//	scotland();
+//	//	break;
+//	//case 6:
+//	//	flag();
+//	//	hitler();
+//	//	break;
+//	//default:
+//	//	pahangFlag();
+//	//	break;
+//	//}
 //	/*glLoadIdentity();
 //	glScalef(0.5, 0.5, 0.5);
 //	glRotatef(45, 0, 0, 1);*/
@@ -597,7 +840,119 @@
 //	//hitler();
 //
 //
-//	
+//	glPushMatrix();
+//	glRotatef(rotate, 0, 0, 1);
+//	glTranslatef(horizontal, vertical, 0);
+//	glScalef(scale, scale, 0);
+//	drawStar(0.0f, 0.0f, 0.5f, 0.2f, 5, R1, G1, B1); // Yellow star
+//	glPopMatrix();
+//
+//	//drawTri(0.1,0.1,-0.1,0.1,0,0.2,0,0,0);
+//	//drawTri(0.2,0.1,0.1,0.1,0.1,0,0,0,0);
+//	//drawTri(-0.2,0.1,-0.1,0.1,-0.1,0,0,0,0);
+//	//drawTri(0,-0.05,-0.1,0,-0.15,-0.1,0,0,0);
+//	//drawTri(0, -0.05,0.1, 0,0.15,-0.1,0,0,0);
+//
+//	//glPushMatrix();
+//	//glTranslatef(horizontal, vertical, 0);
+//	//drawRect(0.1, 0, -0.1, 0, -0.1, 0.1, 0.1, 0.1, R,G,B);
+//	//glPopMatrix();
+//
+//	//glPushMatrix();
+//	//glScalef(0.5, 0.5, 0.5);
+//	//glPushMatrix();
+//	//glTranslatef(0, 0.5, 0);
+//	//drawTri(-0.5, 0, 0, 0.5, 0.5, 0, 1, 0, 0);
+//	//glPopMatrix();
+//
+//	//glPushMatrix();
+//	//glRotatef(45, 0, 0, 1);
+//
+//	//glPushMatrix();
+//	//glTranslatef(-0.5, 0, 0);
+//	//drawRect(-0.5, 0, -0.5, 0.5, 0.5, 0.5, 0.5, 0, 0, 1, 0);
+//	//glPopMatrix();
+//
+//	//
+//
+//	//glPushMatrix();
+//	//glTranslatef(0.5, 0, 0);
+//	//drawRect(-0.5, 0, -0.5, 0.5, 0.5, 0.5, 0.5, 0, 0, 0, 1);
+//	//glPopMatrix();
+//	//glPopMatrix();
+//	//glPopMatrix();
+//
+//	/*drawDayNightBackground();
+//	drawCloud(0.8,2.3,0);
+//	drawCloud(0.3,2.5,0);
+//	drawCloud(-0.4,2.8,0);
+//	glPushMatrix();
+//	glTranslatef(0, -0.3, 0);
+//	windmill();
+//	glPopMatrix();
+//
+//	myGuy();
+//	zeArmy();
+//
+//	glRotatef(0.1, 0, 1, 0.1);
+//	drawMyCube(1);
+//	drawMyCube(0.5);
+//	drawMyCube(-0.5);
+//	hitler();*/
+//
+//
+//	//glRotatef(0.01, 0.2, 0.3, 1);
+//	//drawPyramid(0.5);
+//	//drawPyramid(-0.5);
+//
+//	/*glRotatef(0.01,0.01,1,0.01);
+//	glPushMatrix();
+//	glRotatef(-90, 1, 0, 0);
+//	glColor3f(1, 1, 0);
+//	drawSphere(0.15);
+//	glColor3f(1, 0, 0);
+//	drawCylinder(0.3, 0, 0.2);
+//	glPopMatrix();*/
+//
+//	//glRotatef(0.05, 0.5, 1, 0.3);
+//	//glPushMatrix();
+//	//glTranslatef(0, -0.7, 0);
+//	//glRotatef(-90,1,0,0);
+//	//
+//	//		glPushMatrix();
+//	//		glTranslatef(0.1, -0.1, 0);
+//	//		glColor3f(0.91, 0.75, 0.67);
+//	//		drawSphere(0.2);
+//	//		glPopMatrix();
+//	//
+//	//		glPushMatrix();
+//	//		glTranslatef(-0.1, 0, 0.1);
+//	//		glColor3f(0.91, 0.75, 0.67);
+//	//		drawSphere(0.2);
+//	//		glPopMatrix();
+//	//
+//	//		glPushMatrix();
+//	//		glTranslatef(0, 0, 0.1);
+//	//		glColor3f(0.91, 0.75, 0.67);
+//	//		drawCylinder(0.1, 0.1, 0.9);
+//	//		glPopMatrix();
+//	//
+//	//		glPushMatrix();
+//	//		glTranslatef(0, 0, 1);
+//	//		glColor3f(0.7,0,0);
+//	//		drawSphere(0.12);
+//	//		glPopMatrix();
+//	//
+//	//		glPopMatrix();
+//
+//	//glRotatef(0.05, 1, 1, 1);
+//	//glColor3f(0.89, 0.88, 0.75);
+//	//
+//	//drawSphereWithoutGLU();
+//	//glColor3f(0.81, 0.72, 0.72);
+//	//drawDisk(1,0.7,0.8);
+//
+//
 //
 //
 //

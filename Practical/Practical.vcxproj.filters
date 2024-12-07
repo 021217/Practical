@@ -15,10 +15,19 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="PracticalMain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Practical1.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Practical2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Practical3.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Practical4.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

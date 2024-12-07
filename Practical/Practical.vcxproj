@@ -131,8 +131,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Practical3.cpp" />
     <ClCompile Include="Practical1.cpp" />
     <ClCompile Include="Practical2.cpp" />
+    <ClCompile Include="Practical4.cpp" />
+    <ClCompile Include="PracticalMain.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
