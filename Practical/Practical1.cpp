@@ -1,10 +1,12 @@
 
 #include <Windows.h>
 #include <gl/GL.h>
+#include <gl/GLU.h>
 #include "math.h";
 #include <iostream>
 #include <random>
 
+#pragma comment(lib,"GLU32.lib")
 #pragma comment (lib, "OpenGL32.lib")
 
 #define WINDOW_TITLE "OpenGL Window"
@@ -46,6 +48,7 @@ float timer = 0.0f;
 bool flip = false;
 
 float R = 0, G = 0, B = 0;
+float R1 = 0, G1 = 0, B1 = 0;
 
 double deltaTime = 0.0; // Global variables for high-resolution timing
 LARGE_INTEGER frequency;    // Holds the frequency of the performance counter
@@ -160,6 +163,13 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 			else {
 				day = true;
 			}
+			break;
+		case VK_SPACE:
+			horizontal = 0;
+			vertical = 0;
+			R = 1;
+			G = 1;
+			B = 1;
 			break;
 		default:
 			qNo = 1;
@@ -729,11 +739,70 @@ void drawPyramid(float size) {
 	glVertex3f(0, 0, 0);
 	glEnd();
 }
+
+void drawCylinder(float br, float tr, float h) {
+	GLUquadricObj* cylinder = NULL;
+	cylinder = gluNewQuadric();
+
+	gluQuadricDrawStyle(cylinder, GLU_LINE);
+	//gluQuadricDrawStyle(cylinder, GLU_FILL);
+	gluCylinder(cylinder, br, tr, h, 50, 50);
+
+	gluDeleteQuadric(cylinder);
+}
+
+void drawSphere(float size) {
+	GLUquadricObj* sphere = NULL;
+	sphere = gluNewQuadric();
+
+	gluQuadricDrawStyle(sphere, GLU_LINE);
+	//gluQuadricDrawStyle(sphere, GLU_FILL);
+	gluSphere(sphere, size, 30, 30);
+
+
+	gluDeleteQuadric(sphere);
+}
+
+void drawDisk(float r, float inr, float outr) {
+	GLUquadricObj* disk = NULL;
+	disk = gluNewQuadric();
+	gluQuadricDrawStyle(disk, GLU_FILL);
+	gluDisk(disk, inr, outr, 30, 30);
+	gluDeleteQuadric(disk);
+}
+
+void drawSphereWithoutGLU()
+{
+	const float PI = 3.141592f;
+	GLfloat x, y, z, sliceA, stackA;
+	GLfloat radius = 0.5;
+	int sliceNo = 30, stackNo = 30;
+
+	for (sliceA = 0.0; sliceA < 2 * PI; sliceA += PI / sliceNo)
+	{
+		glBegin(GL_POLYGON);
+		for (stackA = 0.0; stackA < 2 * PI; stackA += PI / stackNo)
+		{
+			x = radius * cos(stackA) * sin(sliceA);
+			y = radius * sin(stackA) * sin(sliceA);
+			z = radius * cos(sliceA);
+			glVertex3f(x, y, z);
+			x = radius * cos(stackA) * sin(sliceA + PI / stackNo);
+			y = radius * sin(stackA) * sin(sliceA + PI / sliceNo);
+			z = radius * cos(sliceA + PI / sliceNo);
+			glVertex3f(x, y, z);
+		}
+		glEnd();
+	}
+}
+
+
 void display()
 {// Clear the screen with a white background
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0);
 	//glEnable(GL_DEPTH_TEST);
-	glClear(GL_COLOR_BUFFER_BIT );
+	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT);
 	//--------------------------------
 	//	OpenGL drawing
 	//--------------------------------
@@ -769,11 +838,13 @@ void display()
 	
 	//flag();
 	//hitler();
+
+
 	glPushMatrix();
 	glRotatef(rotate, 0, 0, 1);
 	glTranslatef(horizontal, vertical, 0);
 	glScalef(scale, scale, 0);
-	drawStar(0.0f, 0.0f, 0.5f, 0.2f, 5, R, G, B); // Yellow star
+	drawStar(0.0f, 0.0f, 0.5f, 0.2f, 5, R1, G1, B1); // Yellow star
 	glPopMatrix();
 
 	//drawTri(0.1,0.1,-0.1,0.1,0,0.2,0,0,0);
@@ -781,7 +852,11 @@ void display()
 	//drawTri(-0.2,0.1,-0.1,0.1,-0.1,0,0,0,0);
 	//drawTri(0,-0.05,-0.1,0,-0.15,-0.1,0,0,0);
 	//drawTri(0, -0.05,0.1, 0,0.15,-0.1,0,0,0);
-	//drawRect(0.1, 0, -0.1, 0, -0.1, 0.1, 0.1, 0.1, 0, 0, 0);
+
+	//glPushMatrix();
+	//glTranslatef(horizontal, vertical, 0);
+	//drawRect(0.1, 0, -0.1, 0, -0.1, 0.1, 0.1, 0.1, R,G,B);
+	//glPopMatrix();
 
 	//glPushMatrix();
 	//glScalef(0.5, 0.5, 0.5);
@@ -807,46 +882,75 @@ void display()
 	//glPopMatrix();
 	//glPopMatrix();
 
-	//drawDayNightBackground();
-	//drawCloud(0.8,2.3,0);
-	//drawCloud(0.3,2.5,0);
-	//drawCloud(-0.4,2.8,0);
-	//glPushMatrix();
-	//glTranslatef(0, -0.3, 0);
-	//windmill();
-	//glPopMatrix();
+	/*drawDayNightBackground();
+	drawCloud(0.8,2.3,0);
+	drawCloud(0.3,2.5,0);
+	drawCloud(-0.4,2.8,0);
+	glPushMatrix();
+	glTranslatef(0, -0.3, 0);
+	windmill();
+	glPopMatrix();
 
-	//myGuy();
-	//zeArmy();
+	myGuy();
+	zeArmy();
 
-	//glRotatef(0.1, 0, 1, 0.1);
-	//drawMyCube(1);
-	//drawMyCube(0.5);
-	//drawMyCube(-0.5);
-	//hitler();
-
-
-
-		//// Create a random device to seed the random number generator
-		//std::random_device rd;
-
-		//// Create a Mersenne Twister generator seeded with random device
-		//std::mt19937 gen(rd());
-
-		//// Define a uniform real distribution in the desired range
-		//std::uniform_real_distribution<> distrib(-1.0, 1.0); // Range [0.0, 1.0]
-
-		//// Generate and print a random floating-point number
-		//float randomFloat = distrib(gen);
+	glRotatef(0.1, 0, 1, 0.1);
+	drawMyCube(1);
+	drawMyCube(0.5);
+	drawMyCube(-0.5);
+	hitler();*/
 
 
-//glRotatef(randomFloat, randomFloat, randomFloat, randomFloat);
-//drawPyramid(randomFloat);
-//drawPyramid(randomFloat);
+	//glRotatef(0.01, 0.2, 0.3, 1);
+	//drawPyramid(0.5);
+	//drawPyramid(-0.5);
+
+	/*glRotatef(0.01,0.01,1,0.01);
+	glPushMatrix();
+	glRotatef(-90, 1, 0, 0);
+	glColor3f(1, 1, 0);
+	drawSphere(0.15);
+	glColor3f(1, 0, 0);
+	drawCylinder(0.3, 0, 0.2);
+	glPopMatrix();*/
+
+//glRotatef(0.05, 0.5, 1, 0.3);
+//glPushMatrix();
+//glTranslatef(0, -0.7, 0);
+//glRotatef(-90,1,0,0);
 //
-//glRotatef(randomFloat, randomFloat, randomFloat, randomFloat);
-//drawPyramid(randomFloat);
-//drawPyramid(randomFloat);
+//		glPushMatrix();
+//		glTranslatef(0.1, -0.1, 0);
+//		glColor3f(0.91, 0.75, 0.67);
+//		drawSphere(0.2);
+//		glPopMatrix();
+//
+//		glPushMatrix();
+//		glTranslatef(-0.1, 0, 0.1);
+//		glColor3f(0.91, 0.75, 0.67);
+//		drawSphere(0.2);
+//		glPopMatrix();
+//
+//		glPushMatrix();
+//		glTranslatef(0, 0, 0.1);
+//		glColor3f(0.91, 0.75, 0.67);
+//		drawCylinder(0.1, 0.1, 0.9);
+//		glPopMatrix();
+//
+//		glPushMatrix();
+//		glTranslatef(0, 0, 1);
+//		glColor3f(0.7,0,0);
+//		drawSphere(0.12);
+//		glPopMatrix();
+//
+//		glPopMatrix();
+
+//glRotatef(0.05, 1, 1, 1);
+//glColor3f(0.89, 0.88, 0.75);
+//
+//drawSphereWithoutGLU();
+//glColor3f(0.81, 0.72, 0.72);
+//drawDisk(1,0.7,0.8);
 
 
 	
@@ -957,7 +1061,21 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int nCmdShow)
 			}
 		}
 
+		R1 += 0.1 * deltaTime;
+		G1 += 0.1 * deltaTime;
+		B1 += 0.2 * deltaTime;
 
+		if (R1 >= 1) {
+			R1 = 0;
+		}
+
+		if (G1 >= 1) {
+			G1 = 0;
+		}
+
+		if (B1 >= 1) {
+			B1 = 0;
+		}
 
 		display();
 
