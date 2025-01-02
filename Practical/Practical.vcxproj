@@ -138,6 +138,27 @@
     <ClCompile Include="Practical5.cpp" />
     <ClCompile Include="PracticalMain.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="background.bmp" />
+    <Image Include="background_back.bmp" />
+    <Image Include="background_bottom.bmp" />
+    <Image Include="background_front.bmp" />
+    <Image Include="background_left.bmp" />
+    <Image Include="background_right.bmp" />
+    <Image Include="background_top.bmp" />
+    <Image Include="Box.bmp" />
+    <Image Include="brick.bmp" />
+    <Image Include="brick1.bmp" />
+    <Image Include="chocolate-biscuit.bmp" />
+    <Image Include="chocolate.bmp" />
+    <Image Include="cone.bmp" />
+    <Image Include="ice.bmp" />
+    <Image Include="Road.bmp" />
+    <Image Include="soil.bmp" />
+    <Image Include="strawberry.bmp" />
+    <Image Include="white-choco.bmp" />
+    <Image Include="Window.bmp" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

@@ -34,4 +34,63 @@
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="background.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="background_back.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="background_bottom.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="background_front.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="background_left.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="background_right.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="background_top.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Box.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="brick.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="brick1.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="chocolate.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="chocolate-biscuit.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="ice.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Road.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="soil.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="strawberry.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="white-choco.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Window.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="cone.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
 </Project>
