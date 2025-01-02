@@ -495,6 +495,8 @@ void projection() {
 
 }
 
+
+
 void exercise() {
 	glClearColor(0, 0, 0, 0); // clear background with red
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -518,7 +520,7 @@ void exercise() {
 	//sea
 	glPushMatrix();
 	glTranslatef(-25, -12.5, -25);
-	drawCube(50, 10, 50, false, 0.51, 0.73, 0.72);
+	drawCube(50, 10, 50, false, 0, 0, 0.72);
 	glPopMatrix();
 
 	GLuint textureArr[4];
@@ -527,57 +529,57 @@ void exercise() {
 	glPushMatrix();
 	glTranslatef(-3, -2, 0);
 	glTranslatef(-1.1, -0.6, -1.1);
-	drawCube(2.2, 1.2, 2.2, false, 0.54, 0.38, 0.27);
+	drawCube(2.2, 1.2, 2.2, false, 0.3, 0.3, 0.3);
 	glPopMatrix();
 
 	glPushMatrix();
 	glTranslatef(3, -2, 0);
 	glTranslatef(-1.1, -0.6, -1.1);
-	drawCube(2.2, 1.2, 2.2, false, 0.54, 0.38, 0.27);
+	drawCube(2.2, 1.2, 2.2, false, 0.3, 0.3, 0.3);
 	glPopMatrix();
 	glDeleteTextures(1, &textureArr[0]);
 
-	textureArr[1] = loadTexture("Window.bmp");
+	textureArr[1] = loadTexture("brick.bmp");
 	glPushMatrix();
 	glTranslatef(-3, 0.2, 0);
 	glTranslatef(-0.75, -2, -0.75);
-	drawCube(1.5, 4, 1.5, false, 1, 1, 1);
+	drawCube(1.5, 4, 1.5, false, 0.4, 0.4, 0.4);
 	glPopMatrix();
 
 	glPushMatrix();
 	glTranslatef(3, 0.2, 0);
 	glTranslatef(-0.75, -2, -0.75);
-	drawCube(1.5, 4, 1.5, false, 1, 1, 1);
+	drawCube(1.5, 4, 1.5, false, 0.4, 0.4, 0.4);
 	glPopMatrix();
 
 
 	//cylinder
 	glPushMatrix();
-	glTranslatef(-3.7, 2.6, 0.7);
+	glTranslatef(-3.7, -0.5, 0.7);
 	glRotatef(90, 1, 0, 0);
-	glColor3f(0.89, 0.8, 0.67);
-	drawCylinder(0.2, 0.2, 4);
+	glColor3f(0.4, 0.4, 0.4);
+	drawCylinder(0.2, 0.2, 1);
 	glPopMatrix();
 
 	glPushMatrix();
-	glTranslatef(-3.7, 2.6, -0.7);
+	glTranslatef(-3.7, -0.5, -0.7);
 	glRotatef(90, 1, 0, 0);
-	glColor3f(0.89, 0.8, 0.67);
-	drawCylinder(0.2, 0.2, 4);
+	glColor3f(0.4, 0.4, 0.4);
+	drawCylinder(0.2, 0.2, 1);
 	glPopMatrix();
 
 	glPushMatrix();
-	glTranslatef(-2.3, 2.6, -0.7);
+	glTranslatef(-2.3, -0.5, -0.7);
 	glRotatef(90, 1, 0, 0);
-	glColor3f(0.89, 0.8, 0.67);
-	drawCylinder(0.2, 0.2, 4);
+	glColor3f(0.4, 0.4, 0.4);
+	drawCylinder(0.2, 0.2, 1);
 	glPopMatrix();
 
 	glPushMatrix();
-	glTranslatef(-2.3, 2.6, 0.7);
+	glTranslatef(-2.3, -0.5, 0.7);
 	glRotatef(90, 1, 0, 0);
-	glColor3f(0.89, 0.8, 0.67);
-	drawCylinder(0.2, 0.2, 4);
+	glColor3f(0.4, 0.4, 0.4);
+	drawCylinder(0.2, 0.2, 1);
 	glPopMatrix();
 	glDeleteTextures(1, &textureArr[1]);
 
@@ -586,45 +588,41 @@ void exercise() {
 	textureArr[2] = loadTexture("soil.bmp");
 
 	glPushMatrix();
-	glTranslatef(-2.3, 2.6, 0.7);
+	glTranslatef(-2.3, -0.5, 0.7);
 	glRotatef(-90, 1, 0, 0);
-	glColor3f(0.89, 0.8, 0.67);
-	drawCone(0.2, 1);
+	glColor3f(0.2, 0.2, 0.2);
+	drawCone(0.2, 0.3);
 	glPopMatrix();
 
 	glPushMatrix();
-	glTranslatef(-3.7, 2.6, 0.7);
+	glTranslatef(-3.7, -0.5, 0.7);
 	glRotatef(-90, 1, 0, 0);
-	glColor3f(0.89, 0.8, 0.67);
-	drawCone(0.2, 1);
+	glColor3f(0.2, 0.2, 0.2);
+	drawCone(0.2, 0.3);
 	glPopMatrix();
 
 	glPushMatrix();
-	glTranslatef(-3.7, 2.6, -0.7);
+	glTranslatef(-3.7, -0.5, -0.7);
 	glRotatef(-90, 1, 0, 0);
-	glColor3f(0.89, 0.8, 0.67);
-	drawCone(0.2, 1);
+	glColor3f(0.2, 0.2, 0.2);
+	drawCone(0.2, 0.3);
 	glPopMatrix();
 
 	glPushMatrix();
-	glTranslatef(-2.3, 2.6, -0.7);
+	glTranslatef(-2.3, -0.5, -0.7);
 	glRotatef(-90, 1, 0, 0);
-	glColor3f(0.89, 0.8, 0.67);
-	drawCone(0.2, 1);
+	glColor3f(0.2, 0.2, 0.2);
+	drawCone(0.2, 0.3);
 	glPopMatrix();
 
 	//top pyramid
 	glPushMatrix();
-	glTranslatef(-3, 3.2, 0);
+	glTranslatef(-3.4, 3.2, -0.4);
 	glTranslatef(-0.6, -1, -0.6);
 	glColor3f(0.5, 0.35, 0.16);
-	drawPyramid(1.2, 2.5, 1.2);
+	drawPyramid(2, 2.5, 2);
 	glPopMatrix();
 
-	glPushMatrix();
-	glTranslatef(-3, 4.6, 0);
-	drawSphere(0.2, GLU_FILL);
-	glPopMatrix();
 	glDeleteTextures(1, &textureArr[2]);
 
 
@@ -632,34 +630,34 @@ void exercise() {
 
 	//right side
 	//cylinder
-	textureArr[1] = loadTexture("Window.bmp");
+	textureArr[1] = loadTexture("brick.bmp");
 
 	glPushMatrix();
-	glTranslatef(3.7, 2.6, 0.7);
+	glTranslatef(3.7, -0.5, 0.7);
 	glRotatef(90, 1, 0, 0);
-	glColor3f(0.89, 0.8, 0.67);
-	drawCylinder(0.2, 0.2, 4);
+	glColor3f(0.4, 0.4, 0.4);
+	drawCylinder(0.2, 0.2, 1);
 	glPopMatrix();
 
 	glPushMatrix();
-	glTranslatef(3.7, 2.6, -0.7);
+	glTranslatef(3.7, -0.5, -0.7);
 	glRotatef(90, 1, 0, 0);
-	glColor3f(0.89, 0.8, 0.67);
-	drawCylinder(0.2, 0.2, 4);
+	glColor3f(0.4, 0.4, 0.4);
+	drawCylinder(0.2, 0.2, 1);
 	glPopMatrix();
 
 	glPushMatrix();
-	glTranslatef(2.3, 2.6, -0.7);
+	glTranslatef(2.3, -0.5, -0.7);
 	glRotatef(90, 1, 0, 0);
-	glColor3f(0.89, 0.8, 0.67);
-	drawCylinder(0.2, 0.2, 4);
+	glColor3f(0.4, 0.4, 0.4);
+	drawCylinder(0.2, 0.2, 1);
 	glPopMatrix();
 
 	glPushMatrix();
-	glTranslatef(2.3, 2.6, 0.7);
+	glTranslatef(2.3, -0.5, 0.7);
 	glRotatef(90, 1, 0, 0);
-	glColor3f(0.89, 0.8, 0.67);
-	drawCylinder(0.2, 0.2, 4);
+	glColor3f(0.4, 0.4, 0.4);
+	drawCylinder(0.2, 0.2, 1);
 	glPopMatrix();
 	glDeleteTextures(1, &textureArr[1]);
 
@@ -667,44 +665,39 @@ void exercise() {
 	textureArr[2] = loadTexture("soil.bmp");
 
 	glPushMatrix();
-	glTranslatef(2.3, 2.6, 0.7);
+	glTranslatef(2.3, -0.5, 0.7);
 	glRotatef(-90, 1, 0, 0);
-	glColor3f(0.89, 0.8, 0.67);
-	drawCone(0.2, 1);
+	glColor3f(0.2, 0.2, 0.2);
+	drawCone(0.2, 0.3);
 	glPopMatrix();
 
 	glPushMatrix();
-	glTranslatef(3.7, 2.6, 0.7);
+	glTranslatef(3.7, -0.5, 0.7);
 	glRotatef(-90, 1, 0, 0);
-	glColor3f(0.89, 0.8, 0.67);
-	drawCone(0.2, 1);
+	glColor3f(0.2, 0.2, 0.2);
+	drawCone(0.2, 0.3);
 	glPopMatrix();
 
 	glPushMatrix();
-	glTranslatef(3.7, 2.6, -0.7);
+	glTranslatef(3.7, -0.5, -0.7);
 	glRotatef(-90, 1, 0, 0);
-	glColor3f(0.89, 0.8, 0.67);
-	drawCone(0.2, 1);
+	glColor3f(0.2, 0.2, 0.2);
+	drawCone(0.2, 0.3);
 	glPopMatrix();
 
 	glPushMatrix();
-	glTranslatef(2.3, 2.6, -0.7);
+	glTranslatef(2.3, -0.5, -0.7);
 	glRotatef(-90, 1, 0, 0);
-	glColor3f(0.89, 0.8, 0.67);
-	drawCone(0.2, 1);
+	glColor3f(0.2, 0.2, 0.2);
+	drawCone(0.2, 0.3);
 	glPopMatrix();
 
 	//top pyramid
 	glPushMatrix();
-	glTranslatef(3, 3.2, 0);
+	glTranslatef(2.6, 3.2, -0.4);
 	glTranslatef(-0.6, -1, -0.6);
 	glColor3f(0.5, 0.35, 0.16);
-	drawPyramid(1.2, 2.5, 1.2);
-	glPopMatrix();
-
-	glPushMatrix();
-	glTranslatef(3, 4.6, 0);
-	drawSphere(0.2, GLU_FILL);
+	drawPyramid(2, 2.5, 2);
 	glPopMatrix();
 	glDeleteTextures(1, &textureArr[2]);
 
